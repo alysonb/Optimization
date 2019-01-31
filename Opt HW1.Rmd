@@ -1,0 +1,136 @@
+---
+title: "Optimization HW1"
+author: "Alyson Brown"
+date: "1/30/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+*Note: I used ' to mean inverse throughout this homework...I couldn't figure out how to get a superscript of -1.
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Q1
+
+Let $B = A'$
+
+So $B^T = (A')^T$
+
+We know that $AB = I$
+
+So then $(AB)^T = I^T$ and $A^TB^T = I$
+
+From this equation we can say that $B^T = (A^T)'$
+
+And so $B^T = (A')^T =(A^T)'$
+
+
+## Q2
+
+```{r Q2}
+
+A = matrix(c(1, 1, 1, 1, .45, -.55, 0, 0, 0, 1, 0, 0, .14, .2, .2, .1), nrow = 4, ncol = 4, byrow = TRUE)
+b =c(250000000,0,62500000,37500000)
+A_inv = solve(A,b)
+print(A_inv)
+
+
+cat("Based on these parameters, the bank should lend $", A_inv[1], " in First Mortgage loans, $", A_inv[2], " in Second Mortgage loans, $", A_inv[3], " in Home Improvement loans, and $", A_inv[4], " in Personal Overdraft loans.")
+
+
+```
+
+## Q3
+
+Let $x_1$ = number of units manufactured of product variant 1
+
+Let $x_2$ = number of units manufactured of product variant 2
+
+Let $x_3$ = number of units manufactured of product variant 3
+
+Let $x_4$ = number of units manufactured of product variant 4
+
+
+MAX Z = $1.5x_1 + 2.5x_2 + 3x_3 + 4.5x_4$
+
+ST: 
+
+  1) $2x_1 + 4x_2 + 3x_3 + 7x_4 <= 100,000$
+
+  2) $3x_1 + 2x_2 + 3x_3 + 4x_4 <= 50,000$
+    
+  3) $2x_1 + 3x_2 + 2x_3 + 5x_4 <= 60,000$
+    
+  4) $x_1, x_2, x_3, x_4 >= 0$
+    
+
+## Q4
+```{r Q4}
+
+##Part A
+#L = matrix(c(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0), nrow = 4, ncol = 4, byrow = TRUE)
+L = matrix(0, nrow = 20, ncol = 20)
+
+# Loop over my_matrix
+for(row in 1:nrow(L)) {
+  for(col in 1:ncol(L)) {
+    if (col<row) {
+      L[row, col] = col/row
+    } else {
+      L[row, col] = row/col
+    }
+    #print(L[row, col])
+  }
+}
+
+print(L)
+
+
+#Part B
+tL <- t(L)
+#print(tL)
+
+if(all.equal(L, tL)){
+  print('Yes it is symmetric!')
+}
+
+#Part C
+C = solve(L)
+#print(C)
+all.equal((C%*%L),diag(1,20,20))
+
+#Part D
+d = c(1,2,3,4,5,6,7,8,9,10,10,9,8,7,6,5,4,3,2,1)
+
+#Part E 
+#Ax = Cd
+#matrix multiplication A %*% B
+
+```
+
+* Note I use L here instead of A
+
+Solve for x: $Lx = Cd$
+
+We know that $C = L'$
+
+$x = L'Cd$ and so $x = C*Cd$
+
+```{r Q4E}
+
+x = C%*%C%*%d
+print(x)
+
+
+```
+
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
